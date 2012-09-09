@@ -1,12 +1,13 @@
+#! /usr/bin/env python
+"""Main file with game loop for Breakout
+
+Uses Ball and Paddle from external modules."""
+
 import pygame
 import random
 
 from Ball import Ball
 from Paddle import Paddle
-
-"""Main file with game loop for Breakout
-
-Uses Ball and Paddle from external modules."""
 
 class Breakout(object):
     def __init__(self):
@@ -25,7 +26,6 @@ class Breakout(object):
         """Start a new game of Breakout
 
         Resets all game level parameters, and starts a new round."""
-        # Reset game level parameters
         self.game_over = False
         self.round = 0
 
@@ -34,9 +34,8 @@ class Breakout(object):
     def new_round(self):
         """Start a new round in a Breakout game
 
-        Resets all round level parameters, puts the ball on the paddle,
-        and centers both."""
-        # Reset round level parameters
+        Resets all round level parameters, increments the round counter, and
+        puts the ball on the paddle, centering both."""
         self.round += 1
         self.ball_is_moving = False
         self.ball.x_velocity = random.randint(-3, 3)
@@ -46,14 +45,15 @@ class Breakout(object):
     def play(self):
         """Start Breakout game
 
-        New game is started and game loop is entered."""
+        New game is started and game loop is entered.
+        The game loop checks for events, updates all objects, and then
+        draws all the objects."""
         self.new_game()
-        while not self.game_over:
+        while not self.game_over:           # Game loop
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN:
                     self.game_over = True
-                    pygame.quit()
-                    return
+                    break
                 if event.type == pygame.KEYDOWN:
                     if not self.ball_is_moving and event.key == pygame.K_SPACE:
                         self.ball_is_moving = True
@@ -62,9 +62,12 @@ class Breakout(object):
                     elif event.key == pygame.K_RIGHT:
                         self.paddle.x_velocity = 4
 
-                    # This resets the round, it's only here for debugging purposes
+                    # This starts a new round, it's only here for debugging purposes
                     if event.key == pygame.K_r:
                         self.new_round()
+                    # This starts a new game, it's only here for debugging purposes
+                    if event.key == pygame.K_g:
+                        self.new_game()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT and self.paddle.x_velocity < 0:
                         self.paddle.x_velocity = 0
@@ -80,9 +83,10 @@ class Breakout(object):
                 self.screen.fill((0, 0, 0))
                 self.paddle.draw(pygame, self.screen)
                 self.ball.draw(pygame, self.screen)
+                
+                pygame.display.flip()
 
-
-            pygame.display.flip()
+        pygame.quit()
 
 if __name__ == '__main__':
     game = Breakout()
