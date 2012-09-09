@@ -1,7 +1,8 @@
 class Ball(object):
     """A Ball class that is aware of pygame.
     
-    Longer description goes here.
+    A small round ball to play Breakout.
+    Coordinates are the center of the ball.
     """
     def __init__(self, x, y, radius=8):
         """Create a Ball object.
