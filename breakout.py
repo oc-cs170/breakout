@@ -4,6 +4,9 @@ import random
 from Ball import Ball
 from Paddle import Paddle
 
+"""Main file with game loop for Breakout
+
+Uses Ball and Paddle from external modules."""
 
 class Breakout(object):
     def __init__(self):
@@ -19,6 +22,9 @@ class Breakout(object):
         self.paddle = Paddle(self.width / 2, self.height - 16, 80, 16)
 
     def new_game(self):
+        """Start a new game of Breakout
+
+        Resets all game level parameters, and starts a new round."""
         # Reset game level parameters
         self.game_over = False
         self.round = 0
@@ -26,6 +32,10 @@ class Breakout(object):
         self.new_round()
 
     def new_round(self):
+        """Start a new round in a Breakout game
+
+        Resets all round level parameters, puts the ball on the paddle,
+        and centers both."""
         # Reset round level parameters
         self.round += 1
         self.ball_is_moving = False
@@ -34,6 +44,9 @@ class Breakout(object):
         self.ball.y = self.height - 32
 
     def play(self):
+        """Start Breakout game
+
+        New game is started and game loop is entered."""
         self.new_game()
         while not self.game_over:
             for event in pygame.event.get():
