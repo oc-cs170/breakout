@@ -6,8 +6,8 @@ Uses Ball and Paddle from external modules.
 
 import pygame
 
-from Ball import Ball
-from Paddle import Paddle
+from ball import Ball
+from paddle import Paddle
 
 
 class Breakout(object):
