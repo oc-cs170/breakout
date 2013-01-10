@@ -8,15 +8,17 @@ class Ball(object):
     A small round ball to play Breakout.
     Coordinates are the center of the ball.
     """
-    def __init__(self, screen_size, radius=8):
+    def __init__(self, screen_width, screen_height, radius=8):
         """Create a Ball object.
 
         Args:
-            screen_size: an int 2-tuple, of screen width and height
+            screen_width: an int, the width of the game screen
+            screen_height: an int, the height of the game screen
             radius: an optional int, the radius of the ball
         """
         # Creation parameters
-        self.screen_width, self.screen_height = screen_size
+        self.screen_width = screen_width
+        self.screen_height = screen_height
         self.radius = radius
 
         # Initial position and velocity
@@ -46,7 +48,7 @@ class Ball(object):
         self.x_velocity = random.randint(-3, 3)
         self.y_velocity = -5
         self.x = paddle.x
-        self.y = paddle.y - (self.radius * 2)
+        self.y = paddle.y - self.radius
         self.moving = False
 
     def serve(self):

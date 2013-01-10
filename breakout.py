@@ -9,18 +9,20 @@ import pygame
 from ball import Ball
 from paddle import Paddle
 
-
 class Breakout(object):
     def __init__(self):
         # Initilaize pygame and the display/window
         pygame.init()
-        self.screen_size = self.screen_width, self.screen_height = 600, 800
-        self.screen = pygame.display.set_mode(self.screen_size)  # , pygame.FULLSCREEN)
+        self.screen_width, self.screen_height = 600, 800
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
         pygame.display.set_caption('Breakout')
 
         # Create the game objects
-        self.paddle = Paddle(self.screen_size)
-        self.ball = Ball(self.screen_size)
+        self.paddle = Paddle(self.screen_width, self.screen_height)
+        self.ball = Ball(self.screen_width, self.screen_height)
+
+        # Let's control the frame rate
+        self.clock = pygame.time.Clock()
 
     def new_game(self):
         """Start a new game of Breakout.
@@ -51,6 +53,7 @@ class Breakout(object):
         """
         self.new_game()
         while not self.game_over:           # Game loop
+            self.clock.tick(50)             # Frame rate control
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN:
                     self.game_over = True
