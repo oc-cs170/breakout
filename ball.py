@@ -8,7 +8,7 @@ class Ball(object):
     A small round ball to play Breakout.
     Coordinates are the center of the ball.
     """
-    def __init__(self, screen_width, screen_height, radius=8):
+    def __init__(self, screen_width, screen_height, radius = 8):
         """Create a Ball object.
 
         Args:
@@ -25,6 +25,7 @@ class Ball(object):
         self.x, self.y = 0, 0
         self.x_velocity, self.y_velocity = 0, 0
         self.moving = False
+        self.dead = False
 
         self.color = 255, 255, 64
 
@@ -50,6 +51,7 @@ class Ball(object):
         self.x = paddle.x
         self.y = paddle.y - self.radius
         self.moving = False
+        self.dead = False
 
     def serve(self):
         """Set the ball in motion."""
@@ -61,8 +63,31 @@ class Ball(object):
         Args:
             paddle: the game's paddle object
         """
+
+        if self.y - self.radius <= 0:
+            self.y_velocity = -self.y_velocity
+
+        if self.x - self.radius <= 0:
+            self.x_velocity = -self.x_velocity
+
+        if self.x + self.radius >= self.screen_width:
+            self.x_velocity = -self.x_velocity
+
+        if self.y + self.radius >= self.screen_height - 2 * paddle.height:
+            if self.x <= paddle.x + (paddle.width / 2):
+                if self.x >= paddle.x - (paddle.width / 2):
+                    self.y_velocity = -abs(self.y_velocity)
+        
         if self.moving:
             self.x += self.x_velocity
             self.y += self.y_velocity
         else:
             self.x = paddle.x
+
+        if self.y + self.radius >= self.screen_height:
+            self.dead = True
+
+
+
+
+

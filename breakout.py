@@ -13,7 +13,7 @@ class Breakout(object):
     def __init__(self):
         # Initilaize pygame and the display/window
         pygame.init()
-        self.screen_width, self.screen_height = 600, 800
+        self.screen_width, self.screen_height = 600, 700
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
         pygame.display.set_caption('Breakout')
 
@@ -32,6 +32,7 @@ class Breakout(object):
         self.game_over = False
         self.round = 0
 
+        
         self.new_round()
 
     def new_round(self):
@@ -43,6 +44,14 @@ class Breakout(object):
         self.round += 1
         self.paddle.reset()
         self.ball.reset(self.paddle)
+
+        if self.round < 3:
+            self.game_over = False
+        if self.round == 3:
+            self.game_over = True
+
+
+        print self.round
 
     def play(self):
         """Start Breakout program.
@@ -80,6 +89,9 @@ class Breakout(object):
             else:
                 self.paddle.update()
                 self.ball.update(self.paddle)
+                if self.ball.dead == True:
+                    self.new_round()
+
 
                 self.screen.fill((0, 0, 0))
                 self.paddle.draw(self.screen)
