@@ -43,7 +43,8 @@ class Paddle(object):
         Args:
             none so far...
         """
-        pass
+        self.x, self.y = self.screen_width / 2, self.screen_height - (2 * self.height)
+        self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
 
     def update(self):
         """Update the position of the paddle.
@@ -52,4 +53,19 @@ class Paddle(object):
         paddle to move.
         """
         self.x += self.x_velocity
+	self.x = max(min(self.x, 560), 40)
         self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

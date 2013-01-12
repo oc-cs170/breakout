@@ -1,7 +1,6 @@
 import random
 import pygame
 
-
 class Ball(object):
     """A Ball class that is aware of pygame.
 
@@ -55,7 +54,7 @@ class Ball(object):
         """Set the ball in motion."""
         self.moving = True
 
-    def update(self, paddle):
+    def update(self, paddle, brick):
         """Update the position of the ball.
 
         Args:
@@ -63,6 +62,29 @@ class Ball(object):
         """
         if self.moving:
             self.x += self.x_velocity
+	    self.x = max(min(self.x, self.screen_width - self.radius), self.radius)
+	    if self.x == self.screen_width - self.radius or self.x == self.radius:
+		    self.x_velocity = -self.x_velocity
+		    
+		    
             self.y += self.y_velocity
+	    self.y = max(min(self.y, self.screen_height - self.radius), self.radius)
+	    # If an edge is hit
+	    if self.y == self.radius or (self.y >= paddle.y - self.radius and paddle.x-paddle.width/2<= self.x <= paddle.x+paddle.width/2):
+		    self.y_velocity = -self.y_velocity
+		    
+	    if self.y <= tbrick.y:
+		    if tbrick-tbrick.width/2 <= self.x <= tbrick-tbrick.width/2:
+			    
+	   
         else:
             self.x = paddle.x
+
+
+
+
+
+
+
+
+

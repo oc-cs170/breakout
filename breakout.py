@@ -8,6 +8,8 @@ import pygame
 
 from ball import Ball
 from paddle import Paddle
+from brick import Brick
+
 
 class Breakout(object):
     def __init__(self):
@@ -20,7 +22,12 @@ class Breakout(object):
         # Create the game objects
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
+	self.brick = list()
+	for i in range(0,600,60):
+		for j in range(42, 211, 42):
+			self.brick.append(Brick(self.screen_width, self.screen_height, i, j))
 
+	self.tbrick = Brick(self.screen_width, self.screen_height, 300, 700)
         # Let's control the frame rate
         self.clock = pygame.time.Clock()
 
@@ -31,6 +38,7 @@ class Breakout(object):
         """
         self.game_over = False
         self.round = 0
+	self.paddle.reset()
 
         self.new_round()
 
@@ -41,7 +49,6 @@ class Breakout(object):
         puts the ball on the paddle.
         """
         self.round += 1
-        self.paddle.reset()
         self.ball.reset(self.paddle)
 
     def play(self):
@@ -54,6 +61,9 @@ class Breakout(object):
         self.new_game()
         while not self.game_over:           # Game loop
             self.clock.tick(50)             # Frame rate control
+	    font = pygame.font.SysFont("monospace", 15)
+	    round_counter = font.render("Round " + str(self.round), 2, (255,255,0))
+	    
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN:
                     self.game_over = True
@@ -79,12 +89,24 @@ class Breakout(object):
                         self.paddle.x_velocity = 0
             else:
                 self.paddle.update()
-                self.ball.update(self.paddle)
+                self.ball.update(self.paddle, self.tbrick)
 
                 self.screen.fill((0, 0, 0))
+		self.screen.blit(round_counter, (0, 0))
+		ball_loc = font.render(str(self.ball.x) + "," + str(self.ball.y), 2, (255,255,0))
+		self.screen.blit(ball_loc, (0, 14))
                 self.paddle.draw(self.screen)
                 self.ball.draw(self.screen)
-
+		self.tbrick.draw(self.screen)
+		
+		
+		#for brick in self.brick:
+		#	brick.draw(self.screen)
+		if self.ball.y >= self.screen_height - self.ball.radius:
+			self.new_round()
+		if self.round > 3:
+			self.new_game()
+		
                 pygame.display.flip()
 
         pygame.quit()
