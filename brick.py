@@ -19,3 +19,4 @@ class Brick(object):
 	def draw(self, screen):
 		pygame.draw.rect(screen, self.color, self.rect, 1)
 		
+		
