@@ -8,6 +8,7 @@ import pygame
 
 from ball import Ball
 from paddle import Paddle
+from brick import Brick 
 
 class Breakout(object):
     def __init__(self):
@@ -20,6 +21,7 @@ class Breakout(object):
         # Create the game objects
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
+        self.brick = Brick(self.screen_width, self.screen_height)
 
         # Let's control the frame rate
         self.clock = pygame.time.Clock()
@@ -31,6 +33,7 @@ class Breakout(object):
         """
         self.game_over = False
         self.round = 0
+        # self.brick.reset()
 
         
         self.new_round()
@@ -47,7 +50,7 @@ class Breakout(object):
 
         if self.round < 3:
             self.game_over = False
-        if self.round == 3:
+        if self.round == 4:
             self.game_over = True
 
 
@@ -88,12 +91,14 @@ class Breakout(object):
                         self.paddle.x_velocity = 0
             else:
                 self.paddle.update()
+                self.brick.update()
                 self.ball.update(self.paddle)
                 if self.ball.dead == True:
                     self.new_round()
 
 
                 self.screen.fill((0, 0, 0))
+                self.brick.draw(self.screen)
                 self.paddle.draw(self.screen)
                 self.ball.draw(self.screen)
 
