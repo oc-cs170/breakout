@@ -8,6 +8,7 @@ import pygame
 
 from ball import Ball
 from paddle import Paddle
+from block import Block
 
 class Breakout(object):
     def __init__(self):
@@ -84,6 +85,7 @@ class Breakout(object):
                 self.screen.fill((0, 0, 0))
                 self.paddle.draw(self.screen)
                 self.ball.draw(self.screen)
+                
 
                 pygame.display.flip()
 
