@@ -51,5 +51,11 @@ class Paddle(object):
         Should be called every frame, by the main game loop to allow the
         paddle to move.
         """
+        
+       
+        if self.x >560:
+            self.x = 560
+        if self.x < 40:
+            self.x = 40
         self.x += self.x_velocity
         self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
