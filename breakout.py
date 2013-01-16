@@ -108,13 +108,12 @@ class Breakout(object):
                         self.paddle.x_velocity = 0
             else:
                 self.paddle.update()
-                self.brick.update()
                 self.ball.update(self.paddle)
                 if self.ball.dead == True:
                     self.new_round()
 
                 self.screen.fill((0, 0, 0))
-                
+
                 self.paddle.draw(self.screen)
                 self.ball.draw(self.screen)
                 

@@ -57,7 +57,7 @@ class Ball(object):
         """Set the ball in motion."""
         self.moving = True
 
-    def update(self, paddle, bricks):
+    def update(self, paddle):
         """Update the position of the ball.
 
         Args:
@@ -76,14 +76,7 @@ class Ball(object):
         if self.y + self.radius >= self.screen_height - 2 * paddle.height:
             if self.x <= paddle.x + (paddle.width / 2):
                 if self.x >= paddle.x - (paddle.width / 2):
-                    self.y_velocity = -abs(self.y_velocity)
-
-
-
-
-
-
-        
+                    self.y_velocity = -abs(self.y_velocity)        
         
         if self.moving:
             self.x += self.x_velocity

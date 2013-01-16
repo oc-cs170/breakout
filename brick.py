@@ -21,7 +21,7 @@ class Brick(object):
         self.x, self.y = x, y
         self.rect = (self.x, self.y, self.width, self.height)
 
-        self.color = 211, 211, 211
+        self.color = 255, 128, 128
 
     def draw(self, screen):
         """Draw the bricks on the screen.
