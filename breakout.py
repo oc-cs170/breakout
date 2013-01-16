@@ -9,6 +9,7 @@ import pygame
 from ball import Ball
 from paddle import Paddle
 
+
 class Breakout(object):
     def __init__(self):
         # Initilaize pygame and the display/window
