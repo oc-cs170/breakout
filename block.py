@@ -6,7 +6,7 @@ class Block(object):
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        self.width, self.height = 55, 16
+        self.width, self.height = 50, 16
         self.x, self.y = x, y
 
         self.rect = (self.x, self.y, self.width, self.height)
@@ -14,6 +14,6 @@ class Block(object):
 
     def draw(self, screen):
         """draw the blocks"""
-        pygame.draw.rect(screen, self.color, self.rect,1)
+        pygame.draw.rect(screen, self.color, self.rect)
 
     

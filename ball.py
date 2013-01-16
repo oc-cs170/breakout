@@ -55,7 +55,7 @@ class Ball(object):
         """Set the ball in motion."""
         self.moving = True
 
-    def update(self, paddle):
+    def update(self, paddle,blocks):
         """Update the position of the ball.
 
         Args:
@@ -73,8 +73,36 @@ class Ball(object):
 
         if self.y >= paddle.y - self.radius and (paddle.x-paddle.width/2 <= self.x <= paddle.x + paddle.width/2):
             self.y_velocity = -self.y_velocity
-            
-       
+
+        for block in blocks:
+                #from left
+                if(self.x + self.radius) <= (block.x + block.width) and self.x >= (block.x + block.width):
+                    if block.y <= self.y and self.y <= block.y+block.height:
+                        self.x_velocity=-self.x_velocity
+                        return block
+                    
+                #from right
+                if (self.x + self.radius) >= block.x and self.x <= block.x:
+                    if block.y >= self.y and self.y <= block.y+block.height:
+                        self.x_velocity=-self.x_velocity
+                        return block
+                
+                #From Top    
+                if(self.y-self.radius) <= (block.y + block.height) and self.y >= (block.y+block.height):
+                    if block.x <= self.x and self.x <= block.x+block.width:
+                        self.y_velocity=-self.y_velocity
+                        return block
+                    
+
+                #From Bottom
+                if(self.y + self.radius)>= block.y and self.y <= (block.y + block.height):
+                    if block.x >= self.x and self.x >= block.x+block.height:
+                        self.y_velocity=-self.y_velocity
+                        return block
+                    
+
+
+
         if self.moving:
             self.x += self.x_velocity
             self.y += self.y_velocity
@@ -82,6 +110,6 @@ class Ball(object):
             self.x = paddle.x
             
         
-        if self.y + self.radius >= self.screen_height:
+        if self.y  >= self.screen_height:
             self.BallGone = True
-            self.reset
+            

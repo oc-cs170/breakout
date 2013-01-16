@@ -17,13 +17,14 @@ class Breakout(object):
         self.screen_width, self.screen_height = 600, 800
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
         pygame.display.set_caption('Breakout')
-
+        
+        
         # Create the game objects
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
         self.blocks = []
         for i in range(0,600,60):
-            for j in range(8,20,20):
+            for j in range(35, 200, 35):
                 self.blocks.append(Block(self.screen_width, self.screen_height, i,j))
         
         # Let's control the frame rate
@@ -68,6 +69,7 @@ class Breakout(object):
         self.new_game()
         while not self.game_over:           # Game loop
             self.clock.tick(50)             # Frame rate control
+        
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN:
                     self.game_over = True
@@ -93,19 +95,24 @@ class Breakout(object):
                         self.paddle.x_velocity = 0
             else:
                 self.paddle.update()
-                self.ball.update(self.paddle)
+                contact = self.ball.update(self.paddle, self.blocks)
+                for block in self.blocks:
+                    if contact == block:
+                        self.blocks.remove(block)
+                
+                if self.ball.BallGone == True:
+                    self.new_round()
 
                 self.screen.fill((0, 0, 0))
                 self.paddle.draw(self.screen)
                 self.ball.draw(self.screen)
+                for block in self.blocks:
+                    block.draw(self.screen)
                 
                 
                 pygame.display.flip()
 
-                for block in self.blocks:
-                    block.draw(self.screen)
-##                if self.ball.BallGone == True:
-##                    self.new_round()
+
         pygame.quit()
 
 if __name__ == '__main__':
