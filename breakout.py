@@ -8,7 +8,7 @@ import pygame
 
 from ball import Ball
 from paddle import Paddle
-from brick import Brick
+from brick import Brick 
 
 class Breakout(object):
     def __init__(self):
@@ -33,6 +33,7 @@ class Breakout(object):
         """
         self.game_over = False
         self.round = 0
+        # self.brick.reset()
 
         
         self.new_round()
@@ -107,12 +108,13 @@ class Breakout(object):
                         self.paddle.x_velocity = 0
             else:
                 self.paddle.update()
+                self.brick.update()
                 self.ball.update(self.paddle)
                 if self.ball.dead == True:
                     self.new_round()
 
                 self.screen.fill((0, 0, 0))
-
+                
                 self.paddle.draw(self.screen)
                 self.ball.draw(self.screen)
                 
