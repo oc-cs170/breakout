@@ -11,7 +11,8 @@ class Paddle(object):
         """Create a Paddle object.
 
         Args:
-            screen_size: an int 2-tuple of screen width and height
+            screen_width: an int, the width of the screen
+            screen_height: an int, the height of the screen
         """
         # Creation parameter
         self.screen_width = screen_width
@@ -35,6 +36,19 @@ class Paddle(object):
         """
         pygame.draw.rect(screen, self.color, self.rect)
 
+    def hit_ball(self, ball_x, x_velocity, y_velocity):
+        """Test for ball contact and reflect if necessary.
+
+        Args:
+            ball_x: an int, the horizontal location of the ball center
+            x_velocity: an int, the horizontal velocity of the ball
+            y_velocity: an int, the vertical velocity of the ball
+        """
+        if y_velocity < 0 or ball_x < self.rect[0] or ball_x > self.rect[0] + self.rect[2]:
+            return x_velocity, y_velocity
+
+        return x_velocity, -y_velocity
+
     def reset(self):
         """Prepare the paddle for a new round.
 
@@ -51,5 +65,14 @@ class Paddle(object):
         Should be called every frame, by the main game loop to allow the
         paddle to move.
         """
-        self.x += self.x_velocity
+        # Keep the paddle on the screen stopping it at the edges
+        if self.rect[0] <= 0:
+            self.x = self.width / 2 + 1
+            self.x_velocity = 0
+        elif self.rect[0] + self.rect[2] >= self.screen_width:
+            self.x = self.screen_width - self.width / 2 - 1
+            self.x_velocity = 0
+        else:
+            self.x += self.x_velocity
+
         self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
