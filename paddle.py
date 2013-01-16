@@ -53,7 +53,7 @@ class Paddle(object):
         """
         
        
-        if self.x >560:
+        if self.x > 560:
             self.x = 560
         if self.x < 40:
             self.x = 40

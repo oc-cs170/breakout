@@ -45,6 +45,11 @@ class Breakout(object):
         self.paddle.reset()
         self.ball.reset(self.paddle)
 
+        if self.round >= 3:
+            self.game_over = True
+            
+                
+        
     def play(self):
         """Start Breakout program.
 
@@ -86,9 +91,11 @@ class Breakout(object):
                 self.paddle.draw(self.screen)
                 self.ball.draw(self.screen)
                 
-
+                
                 pygame.display.flip()
 
+                if self.ball.BallGone == True:
+                    self.new_round()
         pygame.quit()
 
 if __name__ == '__main__':

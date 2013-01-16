@@ -1,7 +1,6 @@
 import random
 import pygame
 
-
 class Ball(object):
     """A Ball class that is aware of pygame.
 
@@ -50,6 +49,7 @@ class Ball(object):
         self.x = paddle.x
         self.y = paddle.y - self.radius
         self.moving = False
+        self.BallGone = False
 
     def serve(self):
         """Set the ball in motion."""
@@ -61,8 +61,24 @@ class Ball(object):
         Args:
             paddle: the game's paddle object
         """
+       
+        
+            
+        if self.y - self.radius <= 0:
+            self.y_velocity = -self.y_velocity
+        if self.x - self.radius <= 0:
+            self.x_velocity = - self.x_velocity
+        if self.x + self.radius >= self.screen_width:
+            self.x_velocity = -self.x_velocity
+
+        if self.y >= paddle.y - self.radius and (paddle.x-paddle.width/2 <= self.x <= paddle.x + paddle.width/2):
+            self.y_velocity = -self.y_velocity
+            
+       
         if self.moving:
             self.x += self.x_velocity
             self.y += self.y_velocity
         else:
             self.x = paddle.x
+            
+        
