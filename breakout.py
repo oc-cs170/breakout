@@ -21,7 +21,11 @@ class Breakout(object):
         # Create the game objects
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
-
+        self.blocks = []
+        for i in range(0,600,60):
+            for j in range(8,20,20):
+                self.blocks.append(Block(self.screen_width, self.screen_height, i,j))
+        
         # Let's control the frame rate
         self.clock = pygame.time.Clock()
 
@@ -45,10 +49,14 @@ class Breakout(object):
         self.paddle.reset()
         self.ball.reset(self.paddle)
 
-        if self.round >= 3:
+        if self.round < 3:
+            self.game_over = False
+        if self.round > 3:
             self.game_over = True
-            
-                
+        
+    
+        print self.round
+
         
     def play(self):
         """Start Breakout program.
@@ -94,8 +102,10 @@ class Breakout(object):
                 
                 pygame.display.flip()
 
-                if self.ball.BallGone == True:
-                    self.new_round()
+                for block in self.blocks:
+                    block.draw(self.screen)
+##                if self.ball.BallGone == True:
+##                    self.new_round()
         pygame.quit()
 
 if __name__ == '__main__':

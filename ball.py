@@ -82,3 +82,6 @@ class Ball(object):
             self.x = paddle.x
             
         
+        if self.y + self.radius >= self.screen_height:
+            self.BallGone = True
+            self.reset
