@@ -52,15 +52,17 @@ class Paddle(object):
         paddle to move.
         """
         
-
+        # When paddle makes contact with right side of screen, paddle stops and stays on screen
         if self.x + (self.width / 2) >= self.screen_width:
             self.x_velocity = 0
             self.x = (self.screen_width - 1) - (self.width / 2)
 
+        # When paddle makes contact with left side of screen, paddle stops and stays on screen
         if self.x - (self.width / 2) <= 0:
             self.x_velocity = 0
             self.x = 1 + (self.width / 2)
 
+        # Allows movement of paddle
         self.x += self.x_velocity
         self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
 
