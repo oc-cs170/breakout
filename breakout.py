@@ -15,7 +15,7 @@ class Breakout(object):
 	def __init__(self):
 		# Initilaize pygame and the display/window
 		pygame.init()
-		self.screen_width, self.screen_height = 600, 800
+		self.screen_width, self.screen_height = 600, 700
 		self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
 		pygame.display.set_caption('Breakout')
 		
