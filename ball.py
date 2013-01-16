@@ -74,8 +74,19 @@ class Ball(object):
                 self.y_velocity = -self.y_velocity
 
             # if paddle is hit
-            if (self.y >= paddle.y - self.radius and paddle.x - paddle.width / 2 <= self.x <= paddle.x + paddle.width / 2):
+            if (self.y + self.radius >= paddle.y and paddle.x - paddle.width / 2 <= self.x <= paddle.x + paddle.width / 2):
                 self.y_velocity = -self.y_velocity
+                # Make another check to adjust x_velocity
+                # Hit left half of paddle from left
+                if (self.x_velocity >= 0 and self.x < paddle.x):
+                    delta = (paddle.x - self.x) / 5
+                    self.x_velocity = max(-5, self.x_velocity - delta)
+
+                # Hit right half of paddle from right
+                if (self.x_velocity <= 0 and self.x > paddle.x):
+                    delta = (self.x - paddle.x) / 5
+                    self.x_velocity = min(5, self.x_velocity + delta)
+
 
             # if a brick is hit
             for brick in bricks:
