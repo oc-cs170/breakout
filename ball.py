@@ -77,6 +77,13 @@ class Ball(object):
             if self.x <= paddle.x + (paddle.width / 2):
                 if self.x >= paddle.x - (paddle.width / 2):
                     self.y_velocity = -abs(self.y_velocity)
+
+
+
+
+
+
+        
         
         if self.moving:
             self.x += self.x_velocity

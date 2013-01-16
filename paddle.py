@@ -25,7 +25,7 @@ class Paddle(object):
         # Velocity
         self.x_velocity = 0
 
-        self.color = 192, 192, 192
+        self.color = 169, 169, 169
 
     def draw(self, screen):
         """Draw the paddle on the screen.

@@ -8,6 +8,7 @@ import pygame
 
 from ball import Ball
 from paddle import Paddle
+from brick import Brick
 
 class Breakout(object):
     def __init__(self):
@@ -20,6 +21,7 @@ class Breakout(object):
         # Create the game objects
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
+        self.brick = Brick(self.screen_width, self.screen_height)
 
         # Let's control the frame rate
         self.clock = pygame.time.Clock()
@@ -47,9 +49,26 @@ class Breakout(object):
 
         if self.round < 3:
             self.game_over = False
-        if self.round == 3:
+        if self.round == 4:
             self.game_over = True
 
+        # Draws the 50 bricks
+        
+                    # Frist Row
+        self.bricks = [Brick(20,20), Brick(76, 20), Brick(132, 20), Brick(188, 20), Brick(244, 20), 
+                    Brick(300, 20), Brick(356, 20), Brick(412, 20), Brick(468, 20), Brick(525, 20), 
+                    # Second Row
+                    Brick(20, 40), Brick(76, 40), Brick(132, 40), Brick(188, 40), Brick(244, 40), 
+                    Brick(300, 40), Brick(356, 40), Brick(412, 40), Brick(468, 40), Brick(525, 40), 
+                    # Third Row
+                    Brick(20, 60), Brick(76, 60), Brick(132, 60), Brick(188, 60), Brick(244, 60), 
+                    Brick(300, 60), Brick(356, 60), Brick(412, 60), Brick(468, 60), Brick(525, 60), 
+                    # Fourth row
+                    Brick(20, 80), Brick(76, 80), Brick(132, 80), Brick(188, 80), Brick(244, 80), 
+                    Brick(300, 80), Brick(356, 80), Brick(412, 80), Brick(468, 80), Brick(525, 80),
+                    # Fifth Row
+                    Brick(20, 100), Brick(76, 100), Brick(132, 100), Brick(188, 100), Brick(244, 100), 
+                    Brick(300, 100), Brick(356,100), Brick(412, 100), Brick(468, 100), Brick(525, 100),]
 
         print self.round
 
@@ -92,10 +111,14 @@ class Breakout(object):
                 if self.ball.dead == True:
                     self.new_round()
 
-
                 self.screen.fill((0, 0, 0))
+
                 self.paddle.draw(self.screen)
                 self.ball.draw(self.screen)
+                
+
+                for brick in self.bricks:
+                    brick.draw(self.screen)
 
                 pygame.display.flip()
 
