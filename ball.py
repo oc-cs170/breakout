@@ -14,7 +14,7 @@ class Ball(object):
         Args:
             screen_width: an int, the width of the game screen
             screen_height: an int, the height of the game screen
-            radius: an optional int, the radius of the ball
+            radius: an int (optional), the radius of the ball
         """
         # Creation parameters
         self.screen_width = screen_width
@@ -49,6 +49,7 @@ class Ball(object):
         self.y_velocity = -5
         self.x = paddle.x
         self.y = paddle.y - self.radius
+        self.rect = (self.x - self.radius, self.y - self.radius, self.radius, self.radius)
         self.moving = False
 
     def serve(self):
@@ -62,7 +63,29 @@ class Ball(object):
             paddle: the game's paddle object
         """
         if self.moving:
+            # Check if ball has hit horizontal edge
+            if self.x + self.radius > self.screen_width:
+                self.x_velocity = -self.x_velocity
+            elif self.x < self.radius:
+                self.x_velocity = -self.x_velocity
+
+            # Check if ball has hit top
+            if self.y < self.radius:
+                self.y_velocity = -self.y_velocity
+
+            # Check if ball has hit bottom
+            if self.y >= self.screen_height - self.radius:
+                self.y_velocity = 0
+                return False
+
+            # Check if ball has hit paddle
+            if self.y + self.radius > paddle.y:
+                self.x_velocity, self.y_velocity = paddle.hit_ball(self.x, self.x_velocity, self.y_velocity)
+
             self.x += self.x_velocity
             self.y += self.y_velocity
         else:
             self.x = paddle.x
+        self.rect = (self.x - self.radius, self.y - self.radius, self.radius, self.radius)
+
+        return True
