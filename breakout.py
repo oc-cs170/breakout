@@ -9,17 +9,21 @@ import pygame
 from ball import Ball
 from paddle import Paddle
 
+
 class Breakout(object):
     def __init__(self):
         # Initilaize pygame and the display/window
+        pygame.mixer.pre_init(44100)
         pygame.init()
         self.screen_width, self.screen_height = 600, 800
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
+        self.background = self.screen.copy()
         pygame.display.set_caption('Breakout')
 
         # Create the game objects
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
+        self.player = pygame.sprite.Group(self.paddle, self.ball)
 
         # Let's control the frame rate
         self.clock = pygame.time.Clock()
@@ -62,9 +66,9 @@ class Breakout(object):
                     if event.key == pygame.K_SPACE:
                         self.ball.serve()
                     if event.key == pygame.K_LEFT:
-                        self.paddle.x_velocity = -4
+                        self.paddle.velocity = -4
                     elif event.key == pygame.K_RIGHT:
-                        self.paddle.x_velocity = 4
+                        self.paddle.velocity = 4
 
                     # This starts a new round, it's only here for debugging purposes
                     if event.key == pygame.K_r:
@@ -73,17 +77,17 @@ class Breakout(object):
                     if event.key == pygame.K_g:
                         self.new_game()
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT and self.paddle.x_velocity < 0:
-                        self.paddle.x_velocity = 0
-                    if event.key == pygame.K_RIGHT and self.paddle.x_velocity > 0:
-                        self.paddle.x_velocity = 0
+                    if event.key == pygame.K_LEFT and self.paddle.velocity < 0:
+                        self.paddle.velocity = 0
+                    if event.key == pygame.K_RIGHT and self.paddle.velocity > 0:
+                        self.paddle.velocity = 0
             else:
+
                 self.paddle.update()
                 self.ball.update(self.paddle)
 
-                self.screen.fill((0, 0, 0))
-                self.paddle.draw(self.screen)
-                self.ball.draw(self.screen)
+                self.player.clear(self.screen, self.background)
+                self.player.draw(self.screen)
 
                 pygame.display.flip()
 

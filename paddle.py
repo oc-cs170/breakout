@@ -1,7 +1,10 @@
 import pygame
 
+PADDLE_WIDTH = 80
+PADDLE_HEIGHT = 16
 
-class Paddle(object):
+
+class Paddle(pygame.sprite.Sprite):
     """A Paddle class that is aware of pygame.
 
     A small rectangular paddle to play Breakout.
@@ -11,29 +14,28 @@ class Paddle(object):
         """Create a Paddle object.
 
         Args:
-            screen_size: an int 2-tuple of screen width and height
+            screen_width: an int, the width of the game screen
+            screen_height: an int, the height of the game screen
         """
+        # Initialize sprite
+        pygame.sprite.Sprite.__init__(self)
+
         # Creation parameter
         self.screen_width = screen_width
         self.screen_height = screen_height
 
         # Size and location
-        self.width, self.height = 80, 16
-        self.x, self.y = self.screen_width / 2, self.screen_height - (2 * self.height)
-        self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
+        self.image = pygame.Surface((PADDLE_WIDTH, PADDLE_HEIGHT))
+        self.image.fill((255, 0, 0))
+        self.image.fill((192, 192, 192),
+                        (1, 1, PADDLE_WIDTH - 2, PADDLE_HEIGHT - 2))
+
+        paddlex = screen_width / 2
+        paddley = screen_height - (2 * PADDLE_HEIGHT)
+        self.rect = self.image.get_rect(midtop=(paddlex, paddley))
 
         # Velocity
-        self.x_velocity = 0
-
-        self.color = 192, 192, 192
-
-    def draw(self, screen):
-        """Draw the paddle on the screen.
-
-        Args:
-            screen: the active screen object
-        """
-        pygame.draw.rect(screen, self.color, self.rect)
+        self.velocity = 0
 
     def reset(self):
         """Prepare the paddle for a new round.
@@ -51,5 +53,8 @@ class Paddle(object):
         Should be called every frame, by the main game loop to allow the
         paddle to move.
         """
-        self.x += self.x_velocity
-        self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
+        self.rect.move_ip(self.velocity, 0)
+        if self.rect.left < 0:
+            self.rect.left = 0
+        elif self.rect.right > self.screen_width:
+            self.rect.right = self.screen_width

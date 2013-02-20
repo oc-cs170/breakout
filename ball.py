@@ -2,7 +2,7 @@ import random
 import pygame
 
 
-class Ball(object):
+class Ball(pygame.sprite.Sprite):
     """A Ball class that is aware of pygame.
 
     A small round ball to play Breakout.
@@ -16,25 +16,27 @@ class Ball(object):
             screen_height: an int, the height of the game screen
             radius: an optional int, the radius of the ball
         """
+        # Initialize sprite
+        pygame.sprite.Sprite.__init__(self)
+
         # Creation parameters
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.radius = radius
+
+        # Create visualization
+        self.color = 255, 255, 64
+        self.image = pygame.Surface((2 * radius, 2 * radius))
+        self.image.fill((1, 2, 3))  # A "Fake" black
+        self.image.set_colorkey((1, 2, 3))
+        pygame.draw.circle(self.image, self.color, (radius, radius), radius)
 
         # Initial position and velocity
-        self.x, self.y = 0, 0
+        self.rect = self.image.get_rect(center=(0, 0))
         self.x_velocity, self.y_velocity = 0, 0
         self.moving = False
 
-        self.color = 255, 255, 64
-
-    def draw(self, screen):
-        """Draw the ball on the screen.
-
-        Args:
-            screen: the active screen object
-        """
-        pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius)
+        # Load sound(s)
+        self.wall_sound = pygame.mixer.Sound('click.wav')
 
     def reset(self, paddle):
         """Prepare the ball for a new round.
@@ -45,11 +47,16 @@ class Ball(object):
         Args:
             paddle: the game's paddle object
         """
-        self.x_velocity = random.randint(-3, 3)
-        self.y_velocity = -5
-        self.x = paddle.x
-        self.y = paddle.y - self.radius
+        # Stop the ball
         self.moving = False
+
+        # Create a random upwards velocity...
+        # Vx in [-3, -2, -1, 1, 2, 3]
+        # Vy = -5
+        self.x_velocity = random.randint(-3, 2)
+        if self.x_velocity >= 0:
+            self.x_velocity += 1
+        self.y_velocity = -5
 
     def serve(self):
         """Set the ball in motion."""
@@ -62,7 +69,12 @@ class Ball(object):
             paddle: the game's paddle object
         """
         if self.moving:
-            self.x += self.x_velocity
-            self.y += self.y_velocity
+            self.rect.move_ip(self.x_velocity, self.y_velocity)
+            if self.rect.left <= 0 or self.rect.right >= self.screen_width:
+                self.x_velocity *= -1
+                self.wall_sound.play()
+            if self.rect.top <= 0:
+                self.y_velocity *= -1
+                self.wall_sound.play()
         else:
-            self.x = paddle.x
+            self.rect.midbottom = paddle.rect.midtop
