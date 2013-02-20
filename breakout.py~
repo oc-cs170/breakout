@@ -92,7 +92,7 @@ class Breakout(object):
 						self.paddle.x_velocity = 0
 			else:
 				self.paddle.update()
-				contact = self.ball.update(self.paddle, self.bricks)
+				contact = self.ball.update(self.paddle, self.bricks, self.ball)
 				for brick in self.bricks:
 					if contact == brick:
 						self.bricks.remove(brick)
