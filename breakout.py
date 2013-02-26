@@ -10,21 +10,45 @@ from ball import Ball
 from paddle import Paddle
 from brick import Brick 
 
+WINDOW_TITLE = "Breakout"
+WINDOW_WIDTH = 600
+WINDOW_HEIGHT = 700
+FPS = 30
+
 class Breakout(object):
     def __init__(self):
         # Initilaize pygame and the display/window
+        pygame.mixer.pre_init(frequency=11025)
         pygame.init()
-        self.screen_width, self.screen_height = 600, 700
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
-        pygame.display.set_caption('Breakout')
+
+        pygame.display.set_caption(WINDOW_TITLE)
+        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+        self.font = pygame.font.SysFont("monospace", 15)
 
         # Create the game objects
-        self.paddle = Paddle(self.screen_width, self.screen_height)
-        self.ball = Ball(self.screen_width, self.screen_height)
-        self.brick = Brick(self.screen_width, self.screen_height)
+        self.paddle = Paddle(WINDOW_WIDTH, WINDOW_HEIGHT)
+        self.ball = Ball(WINDOW_WIDTH, WINDOW_HEIGHT)
+        self.brick = Brick(WINDOW_WIDTH, WINDOW_HEIGHT)
 
         # Let's control the frame rate
+        # self.clock = pygame.time.get_tics()
+
         self.clock = pygame.time.Clock()
+        self.now = pygame.time.get_ticks()
+
+        self.transform = pygame.mixer.Sound('Transform.wav')
+
+    def game_sounds(self, loop=0):
+        pass
+
+    def title_screen(self):
+        end = self.font.render("START GAME", 2, (255, 255, 0))
+        self.screen.blit(end, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+        pygame.display.flip()
+        pygame.time.wait(3000)
+        
+        # self.new_game()
 
     def new_game(self):
         """Start a new game of Breakout.
@@ -83,13 +107,14 @@ class Breakout(object):
         """
         self.new_game()
         while not self.game_over:           # Game loop
-            self.clock.tick(50)             # Frame rate control
+            self.clock.tick(FPS)            # Frame rate control
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN:
                     self.game_over = True
                     break
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
+                        self.transform.play()
                         self.ball.serve()
                     if event.key == pygame.K_LEFT:
                         self.paddle.x_velocity = -4
@@ -128,6 +153,9 @@ class Breakout(object):
 
                 for brick in self.bricks:
                     brick.draw(self.screen)
+
+                if (pygame.time.get_ticks() - self.now) >= 0:
+                    self.title_screen()
 
                 pygame.display.flip()
 

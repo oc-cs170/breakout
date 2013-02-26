@@ -7,19 +7,19 @@ class Paddle(object):
     A small rectangular paddle to play Breakout.
     Coordinates are the center of the top edge of the paddle.
     """
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, WINDOW_WIDTH, WINDOW_HEIGHT):
         """Create a Paddle object.
 
         Args:
             screen_size: an int 2-tuple of screen width and height
         """
         # Creation parameter
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+        self.WINDOW_WIDTH = WINDOW_WIDTH
+        self.WINDOW_HEIGHT = WINDOW_HEIGHT
 
         # Size and location
         self.width, self.height = 80, 16
-        self.x, self.y = self.screen_width / 2, self.screen_height - (2 * self.height)
+        self.x, self.y = self.WINDOW_WIDTH / 2, self.WINDOW_HEIGHT - (2 * self.height)
         self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
 
         # Velocity
@@ -53,9 +53,9 @@ class Paddle(object):
         """
         
         # When paddle makes contact with right side of screen, paddle stops and stays on screen
-        if self.x + (self.width / 2) >= self.screen_width:
+        if self.x + (self.width / 2) >= self.WINDOW_WIDTH:
             self.x_velocity = 0
-            self.x = (self.screen_width - 1) - (self.width / 2)
+            self.x = (self.WINDOW_WIDTH - 1) - (self.width / 2)
 
         # When paddle makes contact with left side of screen, paddle stops and stays on screen
         if self.x - (self.width / 2) <= 0:
