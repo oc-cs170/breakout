@@ -9,6 +9,7 @@ import pygame
 from ball import Ball
 from paddle import Paddle
 from brick import Brick
+from scoreboard import Scoreboard
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 800
@@ -26,6 +27,7 @@ class Breakout(object):
         pygame.display.set_caption('Breakout')
 
         # Create the game objects
+        self.scoreboard = Scoreboard(self.screen)
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
         self.player = pygame.sprite.Group(self.paddle, self.ball)
@@ -35,8 +37,7 @@ class Breakout(object):
             for j in range(10):
                 x = 2 + j * 60
                 self.bricks.append(Brick(x, y))
-
-        self.level = pygame.sprite.Group()
+        self.level = pygame.sprite.Group(self.bricks)
 
         # Let's control the frame rate
         self.clock = pygame.time.Clock()
@@ -152,12 +153,21 @@ class Breakout(object):
                     # This starts a new game, it's only here for debugging purposes
                     if event.key == pygame.K_g:
                         self.new_game()
+                    # This adds points, it's only here for debugging purposes
+                    if event.key == pygame.K_p:
+                        pass
+                    # This adds levels, it's only here for debugging purposes
+                    if event.key == pygame.K_l:
+                        pass
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT and self.paddle.velocity < 0:
                         self.paddle.velocity = 0
                     if event.key == pygame.K_RIGHT and self.paddle.velocity > 0:
                         self.paddle.velocity = 0
             else:
+                self.scoreboard.draw(self.screen)
+                self.scoreboard.update()
+
                 self.paddle.update()
                 self.ball.update(self.paddle)
 
