@@ -1,39 +1,43 @@
 import pygame
 
+PADDLE_WIDTH = 80
+PADDLE_HEIGHT = 16
 
-class Paddle(object):
+
+class Paddle(pygame.sprite.Sprite):
     """A Paddle class that is aware of pygame.
 
     A small rectangular paddle to play Breakout.
     Coordinates are the center of the top edge of the paddle.
     """
-    def __init__(self, WINDOW_WIDTH, WINDOW_HEIGHT):
+    def __init__(self, screen_width, screen_height):
         """Create a Paddle object.
 
         Args:
-            screen_size: an int 2-tuple of screen width and height
+            screen_width: an int, the width of the game screen
+            screen_height: an int, the height of the game screen
         """
+        # Initialize sprite
+        pygame.sprite.Sprite.__init__(self)
+
         # Creation parameter
-        self.WINDOW_WIDTH = WINDOW_WIDTH
-        self.WINDOW_HEIGHT = WINDOW_HEIGHT
+        self.screen_width = screen_width
+        self.screen_height = screen_height
 
         # Size and location
-        self.width, self.height = 80, 16
-        self.x, self.y = self.WINDOW_WIDTH / 2, self.WINDOW_HEIGHT - (2 * self.height)
-        self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
+        self.image = pygame.Surface((PADDLE_WIDTH, PADDLE_HEIGHT))
+        self.image.fill((169, 169, 169), (2, 2, PADDLE_WIDTH - 4, PADDLE_HEIGHT - 4))
+       
+        paddle_x = screen_width / 2
+        paddle_y = screen_height - (2 * PADDLE_HEIGHT)
+        self.rect = self.image.get_rect(midtop=(paddle_x, paddle_y))
+        # self.x, self.y = self.WINDOW_WIDTH / 2, self.WINDOW_HEIGHT - (2 * self.height)
+        # self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
 
         # Velocity
-        self.x_velocity = 0
+        self.velocity = 0
 
-        self.color = 169, 169, 169
-
-    def draw(self, screen):
-        """Draw the paddle on the screen.
-
-        Args:
-            screen: the active screen object
-        """
-        pygame.draw.rect(screen, self.color, self.rect)
+        # self.color = 169, 169, 169
 
     def reset(self):
         """Prepare the paddle for a new round.
@@ -52,27 +56,12 @@ class Paddle(object):
         paddle to move.
         """
         
+        self.rect.move_ip(self.velocity, 0)
         # When paddle makes contact with right side of screen, paddle stops and stays on screen
-        if self.x + (self.width / 2) >= self.WINDOW_WIDTH:
-            self.x_velocity = 0
-            self.x = (self.WINDOW_WIDTH - 1) - (self.width / 2)
+        if self.rect.right > self.screen_width:
+            self.rect.right = self.screen_width
 
         # When paddle makes contact with left side of screen, paddle stops and stays on screen
-        if self.x - (self.width / 2) <= 0:
-            self.x_velocity = 0
-            self.x = 1 + (self.width / 2)
-
-        # Allows movement of paddle
-        self.x += self.x_velocity
-        self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
-
-
-
-
-
-
-
-
-
-
+        if self.rect.left < 0:
+            self.rect.left = 0
 

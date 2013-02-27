@@ -1,33 +1,28 @@
 import pygame
 
 
-class Brick(object):
+class Brick(pygame.sprite.Sprite):
     """A Bricks class that is aware of pygame.
 
     Many small rectangular bricks to play Breakout.
     Coordinates are the top left of the brick.
     """
-    def __init__(self, x, y):
+    width = 50
+    height = 16
+
+    def __init__(self, x=0, y=0, color='#F08080'):
         """Create a Bricks object.
 
         Args:
             screen_size: an int 2-tuple of screen width and height
         """
-        self.screen_width = 600
-        self.screen_height = 700
+        # Initialize sprite
+        pygame.sprite.Sprite.__init__(self)
 
-        # Size and location
-        self.width, self.height = 50, 16
-        self.x, self.y = x, y
-        self.rect = (self.x, self.y, self.width, self.height)
+        self.image = pygame.Surface((self.width, self.height))
+        self.image.set_colorkey((1, 2, 3))
+        self.rect = self.image.get_rect(topleft=(x, y))
+        self.set_color(color)
 
-        self.color = 255, 128, 128
-
-    def draw(self, screen):
-        """Draw the bricks on the screen.
-
-        Args:
-            screen: the active screen object
-        """
-
-        pygame.draw.rect(screen, self.color, self.rect)
+    def set_color(self, color):
+        self.image.fill(pygame.color.Color(color))
