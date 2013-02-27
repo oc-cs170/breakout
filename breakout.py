@@ -13,8 +13,20 @@ from brick import Brick
 
 class Breakout(object):
 	def __init__(self):
-		# Initilaize pygame and the display/window
 		pygame.init()
+
+		# Init sounds 
+		self.sounds = {}
+		scary = "scary.wav"	
+		pygame.mixer.music.load(scary)
+		pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+		pygame.event.set_allowed(pygame.constants.USEREVENT)
+		pygame.mixer.music.play()
+		pygame.event.wait()
+
+
+		# Initilaize pygame and the display/window
+		
 		self.screen_width, self.screen_height = 600, 800
 		self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
 		pygame.display.set_caption('Breakout')
@@ -29,6 +41,9 @@ class Breakout(object):
 
 		# Let's control the frame rate
 		self.clock = pygame.time.Clock()
+
+	def play_sound(self, sound_file):
+		pygame.mixer.play_sound(scary)
 
 	def new_game(self):
 		"""Start a new game of Breakout.
