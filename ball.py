@@ -66,46 +66,25 @@ class Ball(pygame.sprite.Sprite):
             paddle: the game's paddle object
         """
 
+        # If we are moving then the game is being played. Otherwise stay stuck to the paddle
         if self.moving:
             self.rect.move_ip(self.x_velocity, self.y_velocity)
+            # When ball rect makes contact with left or right of screen.
             if self.rect.left <= 0 or self.rect.right >= self.screen_width:
-                self.x_velocity *= -1
-            if self.rect.top <= 22:
+                self.x_velocity = -self.x_velocity
+            # When ball rect makes contact with top of screen
+            if self.rect.top <= 0:
                 self.y_velocity *= -1
         else:
             self.rect.midbottom = paddle.rect.midtop
-
-
-        # # If we are moving then the game is being played. Otherwise stay stuck to the paddle
-        # if self.moving:
-        #     self.x += self.x_velocity
-        #     self.y += self.y_velocity
-        # else:
-        #     self.x = paddle.rect.midtop
 
         # When the ball has passed the paddle and has made contact with bottom of screen, ball is now dead
         if self.rect.top >= self.screen_height:
             self.dead = True
 
-        # # When the ball makes contact with the top of the screen, y velocity is changed to opposite its original 
-        # if self.y - self.radius <= 0:
-        #     self.y_velocity = -self.y_velocity
-
-        # # When the ball makes contact with the left side of the screen, x velocity is changed to opposite its original
-        # if self.x - self.radius <= 0: 
-        #     self.x_velocity = -self.x_velocity
-
-        # # When the ball makes contact with the right side of the screen, x velocity is changed to opposite its original
-        # if self.x + self.radius >= self.screen_width:
-        #     self.x_velocity = -self.x_velocity
-
-        # # When the ball makes contact with the paddle, y velocity is changed back to original speed of -5
-        # if self.y + self.radius >= self.screen_height - 2 * paddle.height: # Checks if ball has made contact w/ top of paddle
-        #     if self.x <= paddle.x + (paddle.width / 2): # Checks if ball has made contact with right side of paddle
-        #         if self.x >= paddle.x - (paddle.width / 2): # Checks if ball has made contact with left side of paddle 
-        #             self.y_velocity = -abs(self.y_velocity)        
-        
-        
+        # When the ball makes contact with the paddle, y velocity is changed back to original speed of -5
+        if pygame.sprite.collide_rect(self, paddle):
+            self.y_velocity = -abs(self.y_velocity)
 
         # for brick in bricks:
         # # When the ball makes contact with a brick, y velocity is changed to opposite its original

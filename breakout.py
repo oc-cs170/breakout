@@ -67,12 +67,8 @@ class Breakout(object):
 
         # Clears the screen
         self.screen.blit(self.background, (0, 0))
-
-        self.new_level(0)        
+      
         self.new_round()
-    
-    def new_level(self, level):
-        self.level.add(self.bricks)
 
     def new_round(self):
         """Start a new round in a Breakout game.

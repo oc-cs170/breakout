@@ -31,13 +31,9 @@ class Paddle(pygame.sprite.Sprite):
         paddle_x = screen_width / 2
         paddle_y = screen_height - (2 * PADDLE_HEIGHT)
         self.rect = self.image.get_rect(midtop=(paddle_x, paddle_y))
-        # self.x, self.y = self.WINDOW_WIDTH / 2, self.WINDOW_HEIGHT - (2 * self.height)
-        # self.rect = (self.x - self.width / 2, self.y, self.width, self.height)
 
         # Velocity
         self.velocity = 0
-
-        # self.color = 169, 169, 169
 
     def reset(self):
         """Prepare the paddle for a new round.
