@@ -73,7 +73,7 @@ class Ball(pygame.sprite.Sprite):
             if self.rect.top <= 22:
                 self.y_velocity *= -1
         else:
-            paddle.rect.midtop
+            self.rect.midbottom = paddle.rect.midtop
 
 
         # # If we are moving then the game is being played. Otherwise stay stuck to the paddle
