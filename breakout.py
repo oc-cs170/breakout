@@ -137,8 +137,8 @@ class Breakout(object):
                 self.player.clear(self.screen, self.background)
                 self.player.draw(self.screen)
                 
-                # if self.ball.dead == True:
-                #     self.new_round()
+                if self.ball.dead == True:
+                    self.new_round()
 
                 # self.screen.fill((0, 0, 0))
 

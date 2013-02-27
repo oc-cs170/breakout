@@ -26,10 +26,8 @@ class Ball(pygame.sprite.Sprite):
 
         self.color = 255, 255, 64
         self.image = pygame.Surface((2 * self.radius, 2 * self.radius))
-        self.image.fill((1, 2, 3))
-        self.image.set_colorkey((1, 2, 3))
         pygame.draw.circle(self.image, self.color, (self.radius, self.radius), self.radius)
-
+        self.image.set_colorkey(pygame.Color('black'))
         # Initial position and velocity
         self.rect = self.image.get_rect(center=(0, 0))
         self.x_velocity, self.y_velocity = 0, 0
@@ -53,6 +51,10 @@ class Ball(pygame.sprite.Sprite):
             self.x_velocity += 1
         self.y_velocity = -5
 
+        self.rect.midbottom = paddle.rect.midtop
+        self.moving = False
+        self.dead = False
+
     def serve(self):
         """Set the ball in motion."""
         self.moving = True
@@ -71,7 +73,7 @@ class Ball(pygame.sprite.Sprite):
             if self.rect.top <= 22:
                 self.y_velocity *= -1
         else:
-            self.rect.midbottom = paddle.rect.midtop
+            paddle.rect.midtop
 
 
         # # If we are moving then the game is being played. Otherwise stay stuck to the paddle
@@ -81,9 +83,9 @@ class Ball(pygame.sprite.Sprite):
         # else:
         #     self.x = paddle.rect.midtop
 
-        # # When the ball has passed the paddle and has made contact with bottom of screen, ball is now dead
-        # if self.rect.midtop + self.radius >= self.screen_height:
-        #     self.dead = True
+        # When the ball has passed the paddle and has made contact with bottom of screen, ball is now dead
+        if self.rect.top >= self.screen_height:
+            self.dead = True
 
         # # When the ball makes contact with the top of the screen, y velocity is changed to opposite its original 
         # if self.y - self.radius <= 0:
