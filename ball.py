@@ -59,7 +59,7 @@ class Ball(pygame.sprite.Sprite):
         """Set the ball in motion."""
         self.moving = True
 
-    def update(self, paddle):
+    def update(self, paddle, bricks):
         """Update the position of the ball.
 
         Args:
@@ -87,8 +87,15 @@ class Ball(pygame.sprite.Sprite):
             self.y_velocity = -abs(self.y_velocity)
 
         # for brick in bricks:
-        # # When the ball makes contact with a brick, y velocity is changed to opposite its original
-          
+        # When the ball makes contact with a brick, y velocity is changed to opposite its original
+        # if pygame.sprite.spritecollide(self, bricks, True):
+        #     self.y_velocity = -self.y_velocity
+
+        if pygame.sprite.spritecollideany(self, bricks):
+            self.y_velocity = -self.y_velocity
+            # pygame.sprite.remove(bricks)
+            
+        
         #     # Top of ball hits bottom of brick and center of ball is less than bottom of brick
         #     if self.y - self.radius <= brick.y + brick.height and self.y >= brick.y + brick.height : 
         #         if self.x <= brick.x + (brick.width / 2):

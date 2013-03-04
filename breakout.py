@@ -40,6 +40,7 @@ class Breakout(object):
                 x = 2 + (j * 60)
                 self.bricks.append(Brick(x, y))
         self.level = pygame.sprite.Group(self.bricks)
+        self.bm = pygame.sprite.Group(self.ball)
 
         # Let's control the frame rate
         self.clock = pygame.time.Clock()
@@ -82,10 +83,8 @@ class Breakout(object):
 
         if self.round < 3:
             self.game_over = False
-        if self.round == 4:
-            self.game_over = True
-
-        
+        # if self.round == 4:
+        #     self.game_over = True
 
         print self.round
 
@@ -128,13 +127,19 @@ class Breakout(object):
                         self.paddle.velocity = 0
             else:
                 self.paddle.update()
-                self.ball.update(self.paddle)
+                self.ball.update(self.paddle, self.bricks)
+
+                if pygame.sprite.groupcollide(self.bm, self.level, False, True):
+                    pygame.sprite.Group.remove(self.level)
+                    # pygame.sprite.remove(self.level)
 
                 self.player.clear(self.screen, self.background)
                 self.player.draw(self.screen)
                 
                 if self.ball.dead == True:
                     self.new_round()
+                if self.round == 4:
+                    self.new_game()
 
                 # self.screen.fill((0, 0, 0))
 
