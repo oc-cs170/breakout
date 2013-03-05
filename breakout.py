@@ -9,6 +9,8 @@ import pygame
 from ball import Ball
 from paddle import Paddle
 from brick import Brick 
+from scoreboard import ScoreBoard
+from splashscreen import SplashScreen
 
 WINDOW_TITLE = "Breakout"
 WINDOW_WIDTH = 600
@@ -28,6 +30,8 @@ class Breakout(object):
         # self.font = pygame.font.SysFont("monospace", 15)
 
         # Create the game objects
+        self.scoreboard = ScoreBoard(self.screen)
+        self.splashscreen = SplashScreen()
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
         self.brick = Brick(self.screen_width, self.screen_height)
@@ -95,6 +99,7 @@ class Breakout(object):
         The game loop checks for events, updates all objects, and then
         draws all the objects.
         """
+        self.splashscreen.draw()
         self.new_game()
         while not self.game_over:           # Game loop
             self.clock.tick(50)            # Frame rate control
@@ -126,6 +131,9 @@ class Breakout(object):
                     if event.key == pygame.K_RIGHT and self.paddle.velocity > 0:
                         self.paddle.velocity = 0
             else:
+                self.scoreboard.draw(self.screen)
+                self.scoreboard.update()
+
                 self.paddle.update()
                 self.ball.update(self.paddle, self.bricks)
 
@@ -139,6 +147,7 @@ class Breakout(object):
                 if self.ball.dead == True:
                     self.new_round()
                 if self.round == 4:
+                    self.splashscreen.draw()
                     self.new_game()
 
                 # self.screen.fill((0, 0, 0))
