@@ -19,7 +19,7 @@ class SplashScreen():
 
         self.title = 'BREAKOUT'
         self.bg = (216, 216, 255)
-        self.fg = (0, 128, 0)
+        self.fg = (72, 61, 139)
         self.clock = pygame.time.Clock()
 
     def draw(self):
@@ -33,7 +33,7 @@ class SplashScreen():
         font1 = pygame.font.SysFont('Arial', 80, bold=True)
         antialias = True
         width, height = font1.size(self.title)
-        x = (self.screen_width - width) / 2
+        x = ((self.screen_width - width) / 2) + 10
         y = 2 * BORDER
 
         for i in range(len(self.title)):

@@ -4,7 +4,7 @@ import pygame
 HEIGHT = 22
 FONT_SIZE = 18
 BG = (218, 218, 218)
-FG = (0, 48, 0)
+FG = (0, 0, 0)
 
 
 class SBTextItem(pygame.sprite.Sprite):
@@ -65,10 +65,12 @@ class ScoreBoard(pygame.sprite.Group):
         self.player2 = 0
         self.level1 = 0
         self.level2 = 0
+        self.lives1 = 0, 0, 0,
 
         if num_players == 1:
-            self.items.add(SBTextItem(font, self.level1, location=(3, 0), prefix='Level '),
-                           SBTextItem(font, self.player1, location=(450, 0), prefix='Score: '))
+            self.items.add(SBTextItem(font, self.level1, location=(3, 0), prefix='Level: '),
+                           SBTextItem(font, self.lives1, location=(235, 0), prefix='Lives: '),
+                           SBTextItem(font, self.player1, location=(523, 0), prefix='Score: '))
 
     def update(self):
         self.items.update()
@@ -77,3 +79,4 @@ class ScoreBoard(pygame.sprite.Group):
     def draw(self, surface):
         self.items.draw(self.scoreboard.image)
         pygame.sprite.Group.draw(self, surface)
+
