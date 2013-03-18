@@ -9,6 +9,7 @@ import pygame
 from ball import Ball
 from paddle import Paddle
 from brick import Brick
+from scoreboard import Scoreboard
 from splashscreen import SplashScreen
 
 SCREEN_WIDTH = 600
@@ -29,6 +30,7 @@ class Breakout(object):
 
         # Create the game objects
         self.splashscreen = SplashScreen(self.screen, BORDER)
+        self.scoreboard = Scoreboard(self.screen)
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
         self.player = pygame.sprite.Group(self.paddle, self.ball)
@@ -100,6 +102,8 @@ class Breakout(object):
                     if event.key == pygame.K_RIGHT and self.paddle.velocity > 0:
                         self.paddle.velocity = 0
             else:
+                self.scoreboard.update()
+                self.scoreboard.draw(self.screen)
 
                 self.paddle.update()
                 self.ball.update(self.paddle)
