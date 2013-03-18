@@ -18,6 +18,7 @@ class Breakout(object):
         self.screen_width, self.screen_height = 600, 800
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
         self.background = self.screen.copy()
+        # self.background.fill((100, 100, 100))
         pygame.display.set_caption('Breakout')
 
         # Create the game objects

@@ -25,11 +25,8 @@ class Paddle(pygame.sprite.Sprite):
         self.screen_height = screen_height
 
         # Size and location
-        self.image = pygame.Surface((PADDLE_WIDTH, PADDLE_HEIGHT))
-        self.image.fill((255, 0, 0))
-        self.image.fill((192, 192, 192),
-                        (1, 1, PADDLE_WIDTH - 2, PADDLE_HEIGHT - 2))
-
+        image = pygame.image.load('paddleRed.png').convert_alpha()
+        self.image = pygame.transform.scale(image, (80, 16))
         paddlex = screen_width / 2
         paddley = screen_height - (2 * PADDLE_HEIGHT)
         self.rect = self.image.get_rect(midtop=(paddlex, paddley))

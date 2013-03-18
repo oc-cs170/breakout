@@ -17,20 +17,14 @@ class Ball(pygame.sprite.Sprite):
             radius: an optional int, the radius of the ball
         """
         # Initialize sprite
-        pygame.sprite.Sprite.__init__(self)
+        super(Ball, self).__init__()
 
         # Creation parameters
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        # Create visualization
-        self.color = 255, 255, 64
-        self.image = pygame.Surface((2 * radius, 2 * radius))
-        self.image.fill((1, 2, 3))  # A "Fake" black
-        self.image.set_colorkey((1, 2, 3))
-        pygame.draw.circle(self.image, self.color, (radius, radius), radius)
-
-        # Initial position and velocity
+        # Get art, set initial position and velocity
+        self.image = pygame.image.load('ballBlue16.png').convert_alpha()
         self.rect = self.image.get_rect(center=(0, 0))
         self.x_velocity, self.y_velocity = 0, 0
         self.moving = False
