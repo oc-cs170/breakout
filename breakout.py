@@ -9,6 +9,11 @@ import pygame
 from ball import Ball
 from paddle import Paddle
 from brick import Brick
+from splashscreen import SplashScreen
+
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 800
+BORDER = 20
 
 
 class Breakout(object):
@@ -16,13 +21,14 @@ class Breakout(object):
         # Initilaize pygame and the display/window
         pygame.mixer.pre_init(44100)
         pygame.init()
-        self.screen_width, self.screen_height = 600, 800
+        self.screen_width, self.screen_height = SCREEN_WIDTH, SCREEN_HEIGHT
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
         self.background = self.screen.copy()
         # self.background.fill((100, 100, 100))
         pygame.display.set_caption('Breakout')
 
         # Create the game objects
+        self.splashscreen = SplashScreen(self.screen, BORDER)
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
         self.player = pygame.sprite.Group(self.paddle, self.ball)
@@ -66,6 +72,7 @@ class Breakout(object):
         The game loop checks for events, updates all objects, and then
         draws all the objects.
         """
+        self.splashscreen.show()
         self.new_game()
         while not self.game_over:           # Game loop
             self.clock.tick(50)             # Frame rate control

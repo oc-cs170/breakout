@@ -1,7 +1,7 @@
 import pygame
 
 WIDTH = 58
-HEIGHT = 20
+HEIGHT = 32
 COLORS = ('red', 'yellow', 'purple', 'green', 'grey')
 
 
@@ -30,7 +30,7 @@ class Brick(pygame.sprite.Sprite):
         if Brick.images is None:
             images = [pygame.image.load('element_' + c + '_rectangle.png').convert_alpha()
                       for c in COLORS]
-            Brick.images = [pygame.transform.scale(image, (58, 32))
+            Brick.images = [pygame.transform.scale(image, (WIDTH, HEIGHT))
                             for image in images]
 
         self.set_color(color or 'grey')
