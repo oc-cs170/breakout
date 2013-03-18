@@ -36,31 +36,22 @@ class Breakout(object):
         self.ball = Ball(self.screen_width, self.screen_height)
         self.brick = Brick(self.screen_width, self.screen_height)
         self.player = pygame.sprite.Group(self.paddle, self.ball)
+        
         # Creats the 50 bircks in a sprite group
-        self.bricks = []
+        self.bricks = pygame.sprite.Group()
         for i in range(5):
             y = 100 + (i * 25)
             for j in range(10):
                 x = 2 + (j * 60)
-                self.bricks.append(Brick(x, y))
-        self.level = pygame.sprite.Group(self.bricks)
+                self.bricks.add(Brick(x, y))
+        
+        # self.level = pygame.sprite.Group(self.bricks)
         self.bm = pygame.sprite.Group(self.ball)
 
         # Let's control the frame rate
         self.clock = pygame.time.Clock()
 
         self.transform = pygame.mixer.Sound('Transform.wav')
-
-    def game_sounds(self, loop=0):
-        pass
-
-    # def title_screen(self):
-    #     end = self.font.render("START GAME", 2, (255, 255, 0))
-    #     self.screen.blit(end, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
-    #     pygame.display.flip()
-    #     pygame.time.wait(3000)
-        
-    #     # self.new_game()
 
     def new_game(self):
         """Start a new game of Breakout.
@@ -73,7 +64,11 @@ class Breakout(object):
         # Clears the screen
         self.screen.blit(self.background, (0, 0))
       
+        # self.new_level(0)
         self.new_round()
+
+    # def new_level(self, level):
+    #     self.level.add(self.bricks)
 
     def new_round(self):
         """Start a new round in a Breakout game.
@@ -87,6 +82,8 @@ class Breakout(object):
 
         if self.round < 3:
             self.game_over = False
+            self.level = self.bricks.copy()
+            self.level.draw(self.screen)
         # if self.round == 4:
         #     self.game_over = True
 
@@ -131,35 +128,57 @@ class Breakout(object):
                     if event.key == pygame.K_RIGHT and self.paddle.velocity > 0:
                         self.paddle.velocity = 0
             else:
-                self.scoreboard.draw(self.screen)
+                # Do the scoreboard
                 self.scoreboard.update()
+                self.scoreboard.draw(self.screen)
 
-                self.paddle.update()
-                self.ball.update(self.paddle, self.bricks)
+                # Where is the ball?
+                bx, by = self.ball.rect.center
 
-                if pygame.sprite.groupcollide(self.bm, self.level, False, True):
-                    pygame.sprite.Group.remove(self.level)
-                    # pygame.sprite.remove(self.level)
+                # Handle ball/brick(s) collisions
+                # hits is a dict if brick(s) is(are) hit
+                # {self.ball: [brick_a, brick_b]}
+                hits = pygame.sprite.groupcollide(self.bm, self.level, False, True)
+                if hits:
+                    bricks = hits[self.ball]
+                    print len(bricks), 'hits(s)'
+                    # Clear all bricks, then redraw those not killed
+                    self.level.clear(self.screen, self.background)
+                    self.level.draw(self.screen)
 
+                    # Do ball (off brick) reflection here
+                    hit_brick = bricks[0] # ignoring multi brick hits for now
+                    if by < hit_brick.rect.bottom or by > hit_brick.rect.top:
+                        self.ball.y_velocity = -self.ball.y_velocity
+                    if bx < hit_brick.rect.left or bx > hit_brick.rect.right:
+                        self.ball.x_velocity = -self.ball.x_velocity
+
+                # Handle ball/paddle collisions
+                # Do ball (off paddle) reflection here
+                if by < self.paddle.rect.top:
+                    if pygame.sprite.collide_rect(self.ball, self.paddle):
+                        self.ball.y_velocity = -self.ball.y_velocity
+                if self.ball.rect.top >= self.screen_height:
+                    self.ball.dead = True
+                    # self.scoreboard.update()
+                    print 'Dead ball!!'
+
+                # Dead ball, lock it to the paddle
+                if not self.ball.moving:
+                    self.ball.rect.midbottom = self.paddle.rect.midtop
+
+                # Affter everything, update and redraw the ball and paddle
                 self.player.clear(self.screen, self.background)
+                self.player.update()
                 self.player.draw(self.screen)
-                
+
                 if self.ball.dead == True:
                     self.new_round()
                 if self.round == 4:
-                    self.splashscreen.draw()
+                    self.splashscreen.game_over()
                     self.new_game()
 
                 # self.screen.fill((0, 0, 0))
-
-                # self.paddle.draw(self.screen)
-                # self.ball.draw(self.screen)
-                
-
-                # if (pygame.time.get_ticks() - self.now) >= 0:
-                #     self.title_screen()
-                self.level.draw(self.screen)
-
                 pygame.display.flip()
 
         pygame.quit()

@@ -8,7 +8,7 @@ class Ball(pygame.sprite.Sprite):
     A small round ball to play Breakout.
     Coordinates are the center of the ball.
     """
-    def __init__(self, screen_width, screen_height, radius = 8):
+    def __init__(self, screen_width, screen_height, radius=8):
         """Create a Ball object.
 
         Args:
@@ -59,7 +59,7 @@ class Ball(pygame.sprite.Sprite):
         """Set the ball in motion."""
         self.moving = True
 
-    def update(self, paddle, bricks):
+    def update(self):
         """Update the position of the ball.
 
         Args:
@@ -75,25 +75,25 @@ class Ball(pygame.sprite.Sprite):
             # When ball rect makes contact with top of screen
             if self.rect.top <= 0:
                 self.y_velocity *= -1
-        else:
-            self.rect.midbottom = paddle.rect.midtop
+        # else:
+        #     self.rect.midbottom = paddle.rect.midtop
 
         # When the ball has passed the paddle and has made contact with bottom of screen, ball is now dead
-        if self.rect.top >= self.screen_height:
-            self.dead = True
+        # if self.rect.top >= self.screen_height:
+        #     self.dead = True
 
-        # When the ball makes contact with the paddle, y velocity is changed back to original speed of -5
-        if pygame.sprite.collide_rect(self, paddle):
-            self.y_velocity = -abs(self.y_velocity)
+        # # When the ball makes contact with the paddle, y velocity is changed back to original speed of -5
+        # if pygame.sprite.collide_rect(self, paddle):
+        #     self.y_velocity = -abs(self.y_velocity)
 
-        # for brick in bricks:
-        # When the ball makes contact with a brick, y velocity is changed to opposite its original
-        # if pygame.sprite.spritecollide(self, bricks, True):
+        # # for brick in bricks:
+        # # When the ball makes contact with a brick, y velocity is changed to opposite its original
+        # # if pygame.sprite.spritecollide(self, bricks, True):
+        # #     self.y_velocity = -self.y_velocity
+
+        # if pygame.sprite.spritecollideany(self, bricks):
         #     self.y_velocity = -self.y_velocity
-
-        if pygame.sprite.spritecollideany(self, bricks):
-            self.y_velocity = -self.y_velocity
-            # pygame.sprite.remove(bricks)
+        #     # pygame.sprite.remove(bricks)
             
         
         #     # Top of ball hits bottom of brick and center of ball is less than bottom of brick
