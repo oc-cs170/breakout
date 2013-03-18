@@ -34,13 +34,6 @@ class Breakout(object):
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
         self.player = pygame.sprite.Group(self.paddle, self.ball)
-        self.bricks = []
-        for i in range(5):
-            y = 100 + i * 25
-            for j in range(10):
-                x = 2 + j * 60
-                self.bricks.append(Brick(x, y))
-        self.level = pygame.sprite.Group(self.bricks)
 
         # Create all bricks and add a brick group
         self.bricks = pygame.sprite.Group()
@@ -68,7 +61,7 @@ class Breakout(object):
         self.new_round()
 
     def new_level(self, level):
-        self.level.add(self.bricks)
+        self.level = self.bricks.copy()
 
     def new_round(self):
         """Start a new round in a Breakout game.
@@ -79,7 +72,6 @@ class Breakout(object):
         self.round += 1
         self.paddle.reset()
         self.ball.reset(self.paddle)
-        self.level = self.bricks.copy()
 
     def splash_screen(self):
         title = 'BREAKOUT'
@@ -182,9 +174,6 @@ class Breakout(object):
 
                 self.paddle.update()
                 self.ball.update(self.paddle)
-
-                self.level.update()
-                self.level.draw(self.screen)
 
                 self.player.clear(self.screen, self.background)
                 self.player.draw(self.screen)

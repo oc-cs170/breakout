@@ -24,7 +24,7 @@ class Ball(pygame.sprite.Sprite):
         self.screen_height = screen_height
 
         # Get art, set initial position and velocity
-        self.image = pygame.image.load('ballBlue16.png').convert_alpha()
+        self.image = pygame.image.load('images/ballBlue16.png').convert_alpha()
         self.rect = self.image.get_rect(center=(0, 0))
         self.x_velocity, self.y_velocity = 0, 0
         self.moving = False

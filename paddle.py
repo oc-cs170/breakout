@@ -25,7 +25,7 @@ class Paddle(pygame.sprite.Sprite):
         self.screen_height = screen_height
 
         # Size and location
-        image = pygame.image.load('paddleRed.png').convert_alpha()
+        image = pygame.image.load('images/paddleRed.png').convert_alpha()
         self.image = pygame.transform.scale(image, (80, 16))
         paddlex = screen_width / 2
         paddley = screen_height - (2 * PADDLE_HEIGHT)
