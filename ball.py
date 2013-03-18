@@ -67,7 +67,7 @@ class Ball(pygame.sprite.Sprite):
             if self.rect.left <= 0 or self.rect.right >= self.screen_width:
                 self.x_velocity *= -1
                 self.wall_sound.play()
-            if self.rect.top <= 0:
+            if self.rect.top <= 22:
                 self.y_velocity *= -1
                 self.wall_sound.play()
         else:
