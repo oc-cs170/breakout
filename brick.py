@@ -36,6 +36,9 @@ class Brick(pygame.sprite.Sprite):
         self.set_color(color or 'grey')
         self.rect = self.image.get_rect(topleft=(x, y))
 
+    def clear(self, surface, background):
+        surface.blit(background, self.rect, self.rect)
+
     def set_color(self, color):
         if color in COLORS:
             index = COLORS.index(color)
