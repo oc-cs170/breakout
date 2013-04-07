@@ -19,8 +19,11 @@ BORDER = 20
 
 class Breakout(object):
     def __init__(self):
+        # Initialize mixer for sound
+        pygame.mixer.init(44100)
+        pygame.mixer.set_num_channels(4)
+
         # Initilaize pygame and the display/window
-        pygame.mixer.pre_init(44100)
         pygame.init()
         self.screen_width, self.screen_height = SCREEN_WIDTH, SCREEN_HEIGHT
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # , pygame.FULLSCREEN)
@@ -37,11 +40,12 @@ class Breakout(object):
 
         # Create all bricks and add a brick group
         self.bricks = pygame.sprite.Group()
-        for i in range(5):
+        colors = ['red', 'yellow', 'green', 'blue', 'purple', 'grey']
+        for i, color in enumerate(colors):
             y = 100 + i * 34
             for j in range(10):
                 x = 1 + j * 60
-                self.bricks.add(Brick(x, y, 'red'))
+                self.bricks.add(Brick(x, y, color))
 
         # Let's control the frame rate
         self.clock = pygame.time.Clock()

@@ -30,7 +30,7 @@ class Ball(pygame.sprite.Sprite):
         self.moving = False
 
         # Load sound(s)
-        self.wall_sound = pygame.mixer.Sound('click.wav')
+        self.wall_sound = pygame.mixer.Sound('sounds/transform.wav')
 
     def reset(self, paddle):
         """Prepare the ball for a new round.
@@ -63,12 +63,13 @@ class Ball(pygame.sprite.Sprite):
             paddle: the game's paddle object
         """
         if self.moving:
-            self.rect.move_ip(self.x_velocity, self.y_velocity)
-            if self.rect.left <= 0 or self.rect.right >= self.screen_width:
+            r = self.rect.move(self.x_velocity, self.y_velocity)
+            if r.left <= 0 or r.right >= self.screen_width:
                 self.x_velocity *= -1
                 self.wall_sound.play()
-            if self.rect.top <= 22:
+            if r.top <= 22 or r.bottom >= self.screen_height:
                 self.y_velocity *= -1
                 self.wall_sound.play()
+            self.rect = r
         else:
             self.rect.midbottom = paddle.rect.midtop
