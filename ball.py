@@ -32,6 +32,22 @@ class Ball(pygame.sprite.Sprite):
         # Load sound(s)
         self.wall_sound = pygame.mixer.Sound('sounds/transform.wav')
 
+    def brick_reflect(self, brick):
+        # Handle vertical reflection
+        if self.y_velocity < 0 and self.rect.top < brick.rect.bottom:
+            self.y_velocity = -self.y_velocity
+        elif self.y_velocity > 0 and self.rect.bottom > brick.rect.top:
+            self.y_velocity = -self.y_velocity
+
+        # Handle horizontal reflection
+        elif self.x_velocity < 0 and self.rect.left < brick.rect.right:
+            self.x_velocity = -self.x_velocity
+        elif self.x_velocity > 0 and self.rect.right > brick.rect.left:
+            self.x_velocity = -self.x_velocity
+
+        else:
+            print 'No reflect:', self.rect, brick.rect
+
     def reset(self, paddle):
         """Prepare the ball for a new round.
 
@@ -52,24 +68,20 @@ class Ball(pygame.sprite.Sprite):
             self.x_velocity += 1
         self.y_velocity = -5
 
+        self.rect.midbottom = paddle.rect.midtop
+
     def serve(self):
         """Set the ball in motion."""
         self.moving = True
 
-    def update(self, paddle):
-        """Update the position of the ball.
-
-        Args:
-            paddle: the game's paddle object
-        """
+    def update(self):
+        """Update the position of the ball."""
         if self.moving:
             r = self.rect.move(self.x_velocity, self.y_velocity)
             if r.left <= 0 or r.right >= self.screen_width:
                 self.x_velocity *= -1
-                self.wall_sound.play()
+                # self.wall_sound.play()
             if r.top <= 22 or r.bottom >= self.screen_height:
                 self.y_velocity *= -1
-                self.wall_sound.play()
+                # self.wall_sound.play()
             self.rect = r
-        else:
-            self.rect.midbottom = paddle.rect.midtop

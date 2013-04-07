@@ -36,7 +36,7 @@ class Breakout(object):
         self.scoreboard = Scoreboard(self.screen)
         self.paddle = Paddle(self.screen_width, self.screen_height)
         self.ball = Ball(self.screen_width, self.screen_height)
-        self.player = pygame.sprite.Group(self.paddle, self.ball)
+        self.player = pygame.sprite.RenderUpdates(self.paddle, self.ball)
 
         # Create all bricks and add a brick group
         self.bricks = pygame.sprite.Group()
@@ -66,6 +66,7 @@ class Breakout(object):
 
     def new_level(self, level):
         self.level = self.bricks.copy()
+        self.level.draw(self.screen)
 
     def new_round(self):
         """Start a new round in a Breakout game.
@@ -76,58 +77,8 @@ class Breakout(object):
         self.round += 1
         self.paddle.reset()
         self.ball.reset(self.paddle)
-
-    def splash_screen(self):
-        title = 'BREAKOUT'
-        bg = (216, 216, 255)
-        fg = (0, 128, 0)
-        clock = pygame.time.Clock()
-
-        # Build the splash screen
-        splash = self.screen.copy()
-        splash.fill((0, 0, 0))
-        inner = (BORDER, BORDER, SCREEN_WIDTH - 2 * BORDER, SCREEN_HEIGHT - 2 * BORDER)
-        splash.fill(bg, inner)
-
-        # hide_screen = pygame.time.get_ticks()
-        font1 = pygame.font.SysFont('Arial', 80, bold=True)
-        antialias = True
-        width, height = font1.size(title)
-        x = (SCREEN_WIDTH - width) / 2
-        y = 2 * BORDER
-
-        for i in range(len(title)):
-            clock.tick(4)
-            self.screen.blit(splash, (0, 0))
-            surf = font1.render(title[0:i + 1], antialias, fg, bg)
-            self.screen.blit(surf, (x, y))
-            pygame.display.flip()
-
-        # clock.tick(1)
-        font2 = pygame.font.SysFont('Arial', 24, bold=True)
-        x *= 2
-        y = y + height + BORDER
-        lines = ['<-, ->: Move paddle',
-                 'Space: Serve ball',
-                 'Esc, Q: Quit game',
-                 ' ',
-                 ' ',
-                 'Press any key to start...']
-        for line in lines:
-            clock.tick(10)
-            surf = font2.render(line, antialias, fg, bg)
-            self.screen.blit(surf, (x, y))
-            y += surf.get_height()
-            pygame.display.flip()
-
-        waiting = True
-        while waiting:           # Pause loop
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    waiting = False
-                    if event.key == pygame.K_q:
-                        self.game_over = True
-                    break
+        updated_rects = self.player.draw(self.screen)
+        pygame.display.update(updated_rects)
 
     def play(self):
         """Start Breakout program.
@@ -172,19 +123,21 @@ class Breakout(object):
                         self.paddle.velocity = 0
                     if event.key == pygame.K_RIGHT and self.paddle.velocity > 0:
                         self.paddle.velocity = 0
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.ball.rect.center = event.pos
             else:
                 self.scoreboard.update()
-                self.scoreboard.draw(self.screen)
+                # self.scoreboard.draw(self.screen)
 
-                self.paddle.update()
-                self.ball.update(self.paddle)
+                hits = pygame.sprite.spritecollide(self.ball, self.level, True)
+                for brick in hits:
+                    self.ball.brick_reflect(brick)
+                    brick.clear(self.screen, self.background)
 
                 self.player.clear(self.screen, self.background)
-                self.player.draw(self.screen)
-
-                self.level.draw(self.screen)
-
-                pygame.display.flip()
+                self.player.update()
+                updated_rects = self.player.draw(self.screen)
+                pygame.display.update(updated_rects)
 
         pygame.quit()
 
