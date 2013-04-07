@@ -16,7 +16,7 @@ class SplashScreen(object):
         # Build the splash screen
         splash = self.screen.copy()
         splash.fill((0, 0, 0))
-        inner = self.screen.get_rect().inflate(self.border, self.border)
+        inner = self.screen.get_rect().inflate(-self.border, -self.border)
         splash.fill(bg, inner)
 
         # hide_screen = pygame.time.get_ticks()
