@@ -50,8 +50,9 @@ class Paddle(pygame.sprite.Sprite):
         Should be called every frame, by the main game loop to allow the
         paddle to move.
         """
-        self.rect.move_ip(self.velocity, 0)
-        if self.rect.left < 0:
-            self.rect.left = 0
-        elif self.rect.right > self.screen_width:
-            self.rect.right = self.screen_width
+        if self.velocity != 0:
+            self.rect.move_ip(self.velocity, 0)
+            if self.rect.left < 0:
+                self.rect.left = 0
+            elif self.rect.right > self.screen_width:
+                self.rect.right = self.screen_width
